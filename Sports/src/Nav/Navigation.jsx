@@ -1,0 +1,81 @@
+import { Box, Flex, HStack, Button, Spacer, Text } from "@chakra-ui/react";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AppContext } from "../state/app.context";
+import { logoutUser } from "../services/auth.service";
+
+function Navigation() {
+  const { user, setContext } = useContext(AppContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const onLogout = () => {
+    logoutUser()
+      .then(() => {
+        setContext({ user: null, userData: null });
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("Logout failed:", error);
+      });
+  };
+
+  const onLoginPage = location.pathname === "/login";
+  const onRegisterPage = location.pathname === "/register";
+
+  return (
+    <Box bg="teal.500" p={7} bg="gray.800">
+      <Flex align="center" px={250}>
+        <Box>
+          <RouterLink to="/">
+            <Text
+              fontSize="4xl"
+              fontWeight="bold"
+              fontFamily="'Delius Unicase', sans-serif"
+              color="white"
+            >
+              GoLean
+            </Text>
+          </RouterLink>
+        </Box>
+        <Spacer />
+        <HStack spacing={4}>
+          {user ? (
+            <>
+             <RouterLink to="/profile">
+                <Text fontSize="3xl" color="white">
+                  <i className="fa-solid fa-user"></i>
+                </Text>
+              </RouterLink>
+              <Button colorScheme="red" onClick={onLogout}>
+                Logout
+              </Button>
+            </>
+          ) : onLoginPage || onRegisterPage ? (
+            <>
+              <RouterLink to="/login">
+                <Text fontSize="lg" color="white">
+                  Login
+                </Text>
+              </RouterLink>
+              <Box w="4" />
+              <RouterLink to="/register">
+                <Text fontSize="lg" color="white">
+                  Register
+                </Text>
+              </RouterLink>
+            </>
+          ) : (
+            <RouterLink to="/login">
+              <Text fontSize="3xl" color="white">
+                <i className="fa-solid fa-user"></i>
+              </Text>
+            </RouterLink>
+          )}
+        </HStack>
+      </Flex>
+    </Box>
+  );
+}
+
+export default Navigation;
