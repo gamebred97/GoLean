@@ -24,14 +24,14 @@ function Navigation() {
   const onRegisterPage = location.pathname === "/register";
 
   return (
-    <Box bg="teal.500" p={7} bg="gray.800">
+    <Box  p={7} bg="gray.900">
       <Flex align="center" px={250}>
         <Box>
           <RouterLink to="/">
             <Text
-              fontSize="4xl"
+              fontSize="5xl"
               fontWeight="bold"
-              fontFamily="'Delius Unicase', sans-serif"
+              font-family='"Share Tech", sans-serif'
               color="white"
             >
               GoLean

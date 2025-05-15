@@ -33,7 +33,7 @@ export const translateToEnglish = async (text) => {
 };
 
 export const getWallpaper = async () => {
-  const url = await fetch("https://api.pexels.com/v1/search?query=bodybuilding&per_page=10", {
+  const url = await fetch("https://api.pexels.com/v1/search?query=bodybuilding&per_page=20", {
   headers: {
     Authorization: "nX26Y21midFdXy15Y4iuuXWjiMX9ujoQooyo4IhUUkEpfS3cS3q6Kb01"
   }
