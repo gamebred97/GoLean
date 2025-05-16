@@ -27,7 +27,7 @@ function Login() {
         });
       })
       .then(() => {
-        navigate("/");
+        navigate("/home");
       })
       .catch((e) => console.log(e.message));
   };
@@ -37,7 +37,7 @@ function Login() {
       .then((result) => {
         const user = result.user;
         setContext({ user });
-        navigate("/");
+        navigate("/home");
       })
       .catch((error) => {
         console.error("Google login error:", error);

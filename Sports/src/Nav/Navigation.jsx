@@ -47,7 +47,7 @@ function Navigation() {
                   <i className="fa-solid fa-user"></i>
                 </Text>
               </RouterLink>
-              <Button colorScheme="red" onClick={onLogout}>
+              <Button colorScheme="red" onClick={onLogout} ml='50px' bg='gray.900' color="white">
                 Logout
               </Button>
             </>

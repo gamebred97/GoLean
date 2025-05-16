@@ -44,7 +44,7 @@ function Register() {
           });
       })
       .then(() => {
-        navigate('/');
+        navigate('/home');
       })
       .catch(e => console.log(e));
   };

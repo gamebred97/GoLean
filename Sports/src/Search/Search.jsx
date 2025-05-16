@@ -11,7 +11,7 @@ import {
 import { getFoodNutrition } from "../server/server";
 import { translateToEnglish } from "../server/server";
 
-export default function FoodSearch() {
+export default function Search() {
   const [query, setQuery] = useState("");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
