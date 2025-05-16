@@ -58,7 +58,7 @@ function Login() {
     w="100%"
     minH="400px"
     mx="auto"
-    mt={250}  // Add margin top to create gap below navigation
+    mt={250}  
     p={6}
     borderWidth={1}
     borderRadius="md"
