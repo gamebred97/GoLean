@@ -86,7 +86,7 @@ function Register() {
               value={user.username}
               onChange={handleChange}
               placeholder="Enter username"
-              isRequired
+              
             />
             <Input
               type="email"
@@ -94,7 +94,7 @@ function Register() {
               value={user.email}
               onChange={handleChange}
               placeholder="Enter email"
-              isRequired
+              
             />
             <Input
               type="password"
@@ -102,21 +102,21 @@ function Register() {
               value={user.password}
               onChange={handleChange}
               placeholder="Enter password"
-              isRequired
+              
             />
             <Input
               name="firstName"
               value={user.firstName}
               onChange={handleChange}
               placeholder="Enter first name"
-              isRequired
+              
             />
             <Input
               name="lastName"
               value={user.lastName}
               onChange={handleChange}
               placeholder="Enter last name"
-              isRequired
+              
             />
             <Button type="submit" colorScheme="teal" width="full">
               Register

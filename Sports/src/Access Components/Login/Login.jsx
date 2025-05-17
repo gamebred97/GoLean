@@ -80,7 +80,7 @@ function Login() {
       value={user.email}
       onChange={handleChange}
       placeholder="Enter email"
-      isRequired
+      
     />
     <Input
       type="password"
@@ -88,7 +88,7 @@ function Login() {
       value={user.password}
       onChange={handleChange}
       placeholder="Enter password"
-      isRequired
+      
     />
     <Button type="submit" colorScheme="teal" width="full">
       Login

@@ -79,7 +79,6 @@ function Target() {
           onChange={(e) => setTarget(e.target.value)}
           bg="gray.700"
           _placeholder={{ color: "gray.400" }}
-          focusBorderColor="teal.300"
         />
 
         <Button colorScheme="teal" onClick={handleAdd}>
@@ -99,6 +98,9 @@ function Target() {
           </Text>
           <Text>
             <strong>EXERCISE:</strong> -
+          </Text>
+          <Text>
+            <strong>REMAINING:</strong> -
           </Text>
         </Box>
       </VStack>

@@ -11,6 +11,7 @@ import { auth } from "./config/firebase-config";
 import { getUserData } from "./services/users.service";
 import Authenticated from "./Authenitcated/Authenitcated";
 import Profile from "./Access Components/Profile/Profile";
+import { FoodProvider } from "./state/food.context.jsx";
 
 function App() {
   const [appState, setAppState] = useState({
@@ -63,6 +64,7 @@ function App() {
     <>
       <Router>
         <AppContext.Provider value={{ ...appState, setContext: setAppState }}>
+          <FoodProvider>
           <Routes>
             <Route path="/" element={<Front />} />
             <Route path="/login" element={<Login />} />
@@ -70,6 +72,7 @@ function App() {
             <Route path="/home" element={<Authenticated><Home /></Authenticated>} />
             <Route path="/profile" element={<Authenticated><Profile/></Authenticated>}/>
           </Routes>
+          </FoodProvider>
         </AppContext.Provider>
       </Router>
     </>
