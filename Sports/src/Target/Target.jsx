@@ -5,9 +5,9 @@ import { AppContext } from "../state/app.context";
 import { get, set, ref } from "firebase/database";
 import { db } from "../config/firebase-config";
 
-function Target() {
+function Target({result ,setResult, remaining, food}) {
   const [target, setTarget] = useState("");
-  const [result, setResult] = useState("");
+//   const [result, setResult] = useState("");
 
   const { user } = useContext(AppContext);
 
@@ -86,22 +86,19 @@ function Target() {
         </Button>
 
         <Text fontSize="sm" color="gray.400">
-          Remaining = Goal - Food + Exercise
+          Remaining = Goal - Food
         </Text>
 
         <Box p={4} bg="gray.700" borderRadius="lg">
           <Text>
-            <strong>BASE GOAL:</strong> {result || "Not set"}
+            <strong>GOAL:</strong> {result || "Not set"}
           </Text>
           <Text>
-            <strong>FOOD:</strong> -
+            <strong>FOOD:</strong> {food || "Not set"}
           </Text>
-          <Text>
-            <strong>EXERCISE:</strong> -
-          </Text>
-          <Text>
-            <strong>REMAINING:</strong> -
-          </Text>
+          {!result ? null : <Text>
+            <strong>REMAINING:</strong> {remaining || "Not set"}
+          </Text>}
         </Box>
       </VStack>
     </Box>

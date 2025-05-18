@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { Box, Text, VStack, Button } from "@chakra-ui/react";
 import { FoodContext } from "../state/food.context.jsx";
 import { getUserPathByUid } from "../services/users.service.js";
@@ -6,17 +6,11 @@ import { AppContext } from "../state/app.context.js";
 import { ref, push, remove } from "firebase/database";
 import { db } from "../config/firebase-config";
 
+
 function DailyIntake() {
-  const [intake, setIntake] = useState([]);
+//   const [intake, setIntake] = useState([]);
 
-  const totalCalories = intake.reduce((sum, item) => sum + item.nf_calories, 0);
-  const totalProtein = intake.reduce((sum, item) => sum + item.nf_protein, 0);
-  const totalCarbs = intake.reduce(
-    (sum, item) => sum + item.nf_total_carbohydrate,
-    0
-  );
-  const totalFat = intake.reduce((sum, item) => sum + item.nf_total_fat, 0);
-
+  const {intake, setIntake} = useContext(FoodContext)
   const { result, setResult } = useContext(FoodContext);
   const { user } = useContext(AppContext);
 
@@ -110,16 +104,6 @@ function DailyIntake() {
               </VStack>
             </Box>
           )}
-        </Box>
-      )}
-
-      {intake.length > 0 && (
-        <Box mt={4} p={4} bg="gray.900" borderRadius="md">
-          <Text fontWeight="bold">Total:</Text>
-          <Text>Calories: {totalCalories.toFixed(1)}</Text>
-          <Text>Protein: {totalProtein.toFixed(1)}g</Text>
-          <Text>Carbs: {totalCarbs.toFixed(1)}g</Text>
-          <Text>Fat: {totalFat.toFixed(1)}g</Text>
         </Box>
       )}
     </>

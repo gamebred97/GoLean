@@ -26,6 +26,7 @@ export default function Search() {
    
         const response = await translateToEnglish(query)
       const data = await getFoodNutrition(response);
+      console.log("Fetched data:", data);
       setResult(data);
     } catch (err) {
       console.error("Fetch error:", err);

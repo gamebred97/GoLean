@@ -12,6 +12,7 @@ import { getUserData } from "./services/users.service";
 import Authenticated from "./Authenitcated/Authenitcated";
 import Profile from "./Access Components/Profile/Profile";
 import { FoodProvider } from "./state/food.context.jsx";
+import Foods from "./hoc Foods/Foods.jsx";
 
 function App() {
   const [appState, setAppState] = useState({
@@ -71,6 +72,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/home" element={<Authenticated><Home /></Authenticated>} />
             <Route path="/profile" element={<Authenticated><Profile/></Authenticated>}/>
+            <Route path="/foods" element={<Authenticated><Foods/></Authenticated>}/>
           </Routes>
           </FoodProvider>
         </AppContext.Provider>

@@ -42,6 +42,12 @@ function Navigation() {
         <HStack spacing={4}>
           {user ? (
             <>
+            <RouterLink to="/foods">
+              <Text>Foods</Text>
+            </RouterLink>
+            <RouterLink to="/home">
+              <Text>Home</Text>
+            </RouterLink>
              <RouterLink to="/profile">
                 <Text fontSize="3xl" color="white">
                   <i className="fa-solid fa-user"></i>
