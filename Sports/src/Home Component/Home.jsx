@@ -35,11 +35,10 @@ function Home() {
   return (
     <>
       <Navigation />
-      <Box display='grid' gridTemplateColumns="1fr 1fr" gap={4}>
       <Box>
         <Target result={result} setResult={setResult} remaining={remaining} food={food}/>
       </Box>
-      </Box>
+
     </>
   );
 }

@@ -6,7 +6,6 @@ import {
   Text,
   Heading,
   VStack,
-  Flex,
   HStack
 } from "@chakra-ui/react";
 import { AppContext } from "../../state/app.context";
@@ -47,12 +46,13 @@ export default function Profile() {
       <Box
         maxW="400px"
         mx="auto"
-        mt={8}
+      
         p={6}
         borderRadius="md"
         boxShadow="md"
-        bg="gray.100"
-        color="black"
+        bg="gray.900"
+        color="white"
+        mt="200px"
       >
         <Heading size="md" mb={4}>
           Profile
@@ -67,6 +67,8 @@ export default function Profile() {
                 value={form.firstName}
                 onChange={handleChange}
                 bg="white"
+                color="black"
+                _placeholder={{ color: "gray.500" }}
               />
             </Box>
             <Box>
@@ -76,6 +78,8 @@ export default function Profile() {
                 value={form.lastName}
                 onChange={handleChange}
                 bg="white"
+                color="black"
+                _placeholder={{ color: "gray.500" }}
               />
             </Box>
 
@@ -98,19 +102,19 @@ export default function Profile() {
           <VStack spacing={4} align="stretch">
             <Box>
               <Text mb={1}>First Name:</Text>
-              <Box bg="white" p={2} border="1px solid #ccc" borderRadius="md">
+              <Box bg="white" p={2} border="1px solid #ccc" borderRadius="md" color="black">
                 {form.firstName}
               </Box>
             </Box>
             <Box>
               <Text mb={1}>Last Name:</Text>
-              <Box bg="white" p={2} border="1px solid #ccc" borderRadius="md">
+              <Box bg="white" p={2} border="1px solid #ccc" borderRadius="md" color="black">
                 {form.lastName}
               </Box>
             </Box>
             <Box>
               <Text mb={1}>Email:</Text>
-              <Box bg="white" p={2} border="1px solid #ccc" borderRadius="md">
+              <Box bg="white" p={2} border="1px solid #ccc" borderRadius="md" color="black">
                 {form.email}
               </Box>
             </Box>

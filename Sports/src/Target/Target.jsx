@@ -5,9 +5,9 @@ import { AppContext } from "../state/app.context";
 import { get, set, ref } from "firebase/database";
 import { db } from "../config/firebase-config";
 
-function Target({result ,setResult, remaining, food}) {
+function Target({ result, setResult, remaining, food }) {
   const [target, setTarget] = useState("");
-//   const [result, setResult] = useState("");
+  //   const [result, setResult] = useState("");
 
   const { user } = useContext(AppContext);
 
@@ -59,17 +59,23 @@ function Target({result ,setResult, remaining, food}) {
 
   return (
     <Box
-      maxW="400px"
-      mx="auto"
-      mt={10}
-      p={6}
+      maxW="700px" 
+      w="90vw"
+      mx="auto" 
+      mt="calc(100px + 20px)"
+      p={8}
       bg="gray.800"
       borderRadius="2xl"
       boxShadow="lg"
       color="white"
+      minH="600px" // bigger height
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+       fontFamily="'Ancizar Serif', serif"
     >
-      <VStack spacing={4} align="stretch">
-        <Heading size="md" textAlign="center">
+      <VStack spacing={6} align="stretch">
+        <Heading size="5xl" textAlign="center" mb="50px"  fontFamily="'Ancizar Serif', serif">
           Calorie Target
         </Heading>
 
@@ -79,9 +85,16 @@ function Target({result ,setResult, remaining, food}) {
           onChange={(e) => setTarget(e.target.value)}
           bg="gray.700"
           _placeholder={{ color: "gray.400" }}
+          mb="20px"
+          height="70px"
+          fontSize="32px"
+          _placeholder={{
+            color: "gray.400",
+            fontSize: "32px",
+          }}
         />
 
-        <Button colorScheme="teal" onClick={handleAdd}>
+        <Button colorScheme="teal" onClick={handleAdd} fontSize="20px" fontWeight="700">
           Add
         </Button>
 
@@ -89,16 +102,18 @@ function Target({result ,setResult, remaining, food}) {
           Remaining = Goal - Food
         </Text>
 
-        <Box p={4} bg="gray.700" borderRadius="lg">
+        <Box p={6} bg="gray.700" borderRadius="lg" fontSize="40px">
           <Text>
-            <strong>GOAL:</strong> {result || "Not set"}
+            <strong>Goal:</strong> {result || "-"}
           </Text>
           <Text>
-            <strong>FOOD:</strong> {food || "Not set"}
+            <strong>Food:</strong> {food || "-"}
           </Text>
-          {!result ? null : <Text>
-            <strong>REMAINING:</strong> {remaining || "Not set"}
-          </Text>}
+          {!result ? null : (
+            <Text>
+              <strong>Remaining:</strong> {remaining || "-"}
+            </Text>
+          )}
         </Box>
       </VStack>
     </Box>
