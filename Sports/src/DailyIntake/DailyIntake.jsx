@@ -8,8 +8,6 @@ import { db } from "../config/firebase-config";
 
 
 function DailyIntake() {
-//   const [intake, setIntake] = useState([]);
-
   const {intake, setIntake} = useContext(FoodContext)
   const { result, setResult } = useContext(FoodContext);
   const { user } = useContext(AppContext);

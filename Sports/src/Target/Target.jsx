@@ -5,13 +5,13 @@ import { AppContext } from "../state/app.context";
 import { get, set, ref } from "firebase/database";
 import { db } from "../config/firebase-config";
 
-function Target({ result, setResult, remaining, food }) {
+function Target({ result, setResult, remaining, food 
+}) {
   const [target, setTarget] = useState("");
-  //   const [result, setResult] = useState("");
 
   const { user } = useContext(AppContext);
 
-  async function addBaseGoal(goal) {
+  async function addBaseGoal(goal, remaining) {
     if (!user) return;
 
     const uniqueUser = await getUserPathByUid(user.uid);
@@ -22,6 +22,7 @@ function Target({ result, setResult, remaining, food }) {
       baseGoal: goal || "",
       food: "",
       exercise: "",
+      remaining: remaining ||  "",
     };
 
     try {
@@ -46,6 +47,22 @@ function Target({ result, setResult, remaining, food }) {
     }
   }
 
+  //   async function setRemainingDB() {
+  //   if (!user) return;
+  //   const uniqueUser = await getUserPathByUid(user.uid);
+  //   if (!uniqueUser) return;
+
+  //   const path = ref(db, `${uniqueUser}/goal`);
+
+  //  try {
+  //   await update(path , {remaining})
+  //  } catch (error) {
+  //     console.error("Error updating remainin goal:", error);
+  //   }
+  // }
+
+  
+
   useEffect(() => {
     fetchGoal();
   }, [user]);
@@ -53,7 +70,8 @@ function Target({ result, setResult, remaining, food }) {
   async function handleAdd() {
     if (!user) return;
     setResult(target);
-    await addBaseGoal(target);
+    // setRemaining(target)
+    await addBaseGoal(target, target);
     setTarget("");
   }
 
@@ -107,13 +125,16 @@ function Target({ result, setResult, remaining, food }) {
             <strong>Goal:</strong> {result || "-"}
           </Text>
           <Text>
-            <strong>Food:</strong> {food || "-"}
+            <strong>Food:</strong> {Number(food).toFixed() || "-"}
           </Text>
-          {!result ? null : (
+          {/* {!result ? null : (
             <Text>
               <strong>Remaining:</strong> {remaining || "-"}
             </Text>
-          )}
+          )} */}
+          <Text>
+              <strong>Remaining:</strong> {Number(remaining).toFixed() || "-"}
+            </Text>
         </Box>
       </VStack>
     </Box>

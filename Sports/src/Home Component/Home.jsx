@@ -2,7 +2,6 @@
 import Navigation from "../Nav/Navigation";
 import { Box, Spacer } from "@chakra-ui/react";
 import Target from "../Target/Target";
-import DailyIntake from "../DailyIntake/DailyIntake";
 import { useState , useEffect, useContext} from "react";
 import { FoodContext } from "../state/food.context";
 
@@ -11,7 +10,6 @@ function Home() {
   const {intake} = useContext(FoodContext)
 
    const [result, setResult] = useState("")
-    // const [intake, setIntake] = useState([]);
     const [food, setFood] = useState(0)
     const [remaining, setRemaining] = useState("");
 
