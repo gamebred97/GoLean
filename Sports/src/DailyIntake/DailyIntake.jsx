@@ -1,16 +1,37 @@
-import { useContext } from "react";
+import { useContext, useState, useCallback } from "react";
 import { Box, Text, VStack, Button } from "@chakra-ui/react";
 import { FoodContext } from "../state/food.context.jsx";
 import { getUserPathByUid } from "../services/users.service.js";
 import { AppContext } from "../state/app.context.js";
-import { ref, push, remove } from "firebase/database";
+import { ref, push, remove, get } from "firebase/database";
 import { db } from "../config/firebase-config";
-
+import moment from "moment";
+import ItemsList from "../Items LIst/ItemsList.jsx";
 
 function DailyIntake() {
-  const {intake, setIntake} = useContext(FoodContext)
+  const { intake, setIntake } = useContext(FoodContext);
   const { result, setResult } = useContext(FoodContext);
   const { user } = useContext(AppContext);
+  const [allFood, setAllFood] = useState({});
+
+  const handleList = useCallback(async () => {
+    if (!user) return;
+    const uniqueUser = await getUserPathByUid(user.uid);
+    if (!uniqueUser) return;
+
+    const macrosRef = ref(db, `${uniqueUser}/macros`);
+    try {
+      const snapshot = await get(macrosRef);
+      if (snapshot.exists()) {
+        setAllFood(snapshot.val());
+      } else {
+        setAllFood({});
+      }
+    } catch (error) {
+      console.error("Error fetching macros:", error);
+      setAllFood({});
+    }
+  }, [user]);
 
   async function addMacros(food) {
     if (!user) return;
@@ -25,6 +46,7 @@ function DailyIntake() {
       protein: food.nf_protein || "",
       carbs: food.nf_total_carbohydrate || "",
       fat: food.nf_total_fat || "",
+      date: moment().format("LLL"),
     };
 
     try {
@@ -39,6 +61,7 @@ function DailyIntake() {
     if (!user) return;
     const id = await addMacros(food);
     setIntake((prev) => [...prev, { ...food, id }]);
+    handleList();
   }
 
   function handleRemoveSearch() {
@@ -55,9 +78,16 @@ function DailyIntake() {
 
     try {
       await remove(macroRef);
+
       setIntake((prev) =>
         prev.filter((element) => element.id !== foodToRemove.id)
       );
+
+      setAllFood((prev) => {
+        const updated = { ...prev };
+        delete updated[foodToRemove.id];
+        return updated;
+      });
     } catch (error) {
       console.error("Error removing macro:", error);
     }
@@ -78,32 +108,15 @@ function DailyIntake() {
               <Button onClick={handleRemoveSearch}>Remove</Button>
             </Box>
           ))}
-
-          {intake.length > 0 && (
-            <Box mt={6}>
-              <Text fontSize="md" fontWeight="bold">
-                Items Added:
-              </Text>
-              <VStack spacing={2} align="start">
-                {intake.map((item, i) => (
-                  <Box key={i} p={2} bg="gray.900" borderRadius="md" w="100%">
-                    <Text>{item.food_name}</Text>
-                    <Text fontSize="sm">Calories: {item.nf_calories}</Text>
-                    <Text fontSize="sm">Protein: {item.nf_protein}g</Text>
-                    <Text fontSize="sm">
-                      Carbs: {item.nf_total_carbohydrate}g
-                    </Text>
-                    <Text fontSize="sm">Fat: {item.nf_total_fat}g</Text>
-                    <Button onClick={() => handleRemoveList(item)}>
-                      Remove
-                    </Button>
-                  </Box>
-                ))}
-              </VStack>
-            </Box>
-          )}
         </Box>
       )}
+      <ItemsList
+        allFood={allFood}
+        setAllFood={setAllFood}
+        intake={intake}
+        handleRemoveList={handleRemoveList}
+        handleList={handleList}
+      />
     </>
   );
 }
