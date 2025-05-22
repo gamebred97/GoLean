@@ -6,6 +6,18 @@ import { useNavigate } from "react-router-dom";
 import Navigation from "../../Nav/Navigation";
 import { googleLogin } from "../../services/auth.service";
 
+/**
+ * Login component allows users to sign in using email/password or Google OAuth.
+ *
+ * Features:
+ * - Controlled inputs for email and password.
+ * - Validates that both fields are filled before submitting.
+ * - Calls `loginUser` service to authenticate with email and password.
+ * - On success, updates global app context with user info and navigates to "/home".
+ * - Supports Google login with `googleLogin` service, updates context and navigates on success.
+ * - Shows a navigation bar on top.
+ */
+
 function Login() {
   const { setContext } = useContext(AppContext);
   const navigate = useNavigate();

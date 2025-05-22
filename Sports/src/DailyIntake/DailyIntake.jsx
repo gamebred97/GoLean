@@ -8,12 +8,26 @@ import { db } from "../config/firebase-config";
 import moment from "moment";
 import ItemsList from "../Items LIst/ItemsList.jsx";
 
+/**
+ * Component for displaying and managing daily food intake.
+ * Shows search results, allows adding foods to intake,
+ * lists all stored macros, and allows removal.
+ * 
+ * @component
+ * @returns {JSX.Element} The DailyIntake component.
+ */
 function DailyIntake() {
-  const { intake, setIntake } = useContext(FoodContext);
-  const { result, setResult } = useContext(FoodContext);
+  const { intake, setIntake, result, setResult } = useContext(FoodContext);
   const { user } = useContext(AppContext);
   const [allFood, setAllFood] = useState({});
 
+  /**
+   * Fetch all macros data from Firebase for the current user
+   * and update the allFood state.
+   * 
+   * @async
+   * @function
+   */
   const handleList = useCallback(async () => {
     if (!user) return;
     const uniqueUser = await getUserPathByUid(user.uid);
@@ -33,6 +47,19 @@ function DailyIntake() {
     }
   }, [user]);
 
+  /**
+   * Add a food macro entry to Firebase for the current user.
+   * 
+   * @async
+   * @function
+   * @param {Object} food - The food object containing nutrition info.
+   * @param {string} food.food_name - Name of the food.
+   * @param {number} food.nf_calories - Calories.
+   * @param {number} food.nf_protein - Protein amount.
+   * @param {number} food.nf_total_carbohydrate - Carbohydrate amount.
+   * @param {number} food.nf_total_fat - Fat amount.
+   * @returns {Promise<string|undefined>} The new database key if successful.
+   */
   async function addMacros(food) {
     if (!user) return;
 
@@ -57,6 +84,13 @@ function DailyIntake() {
     }
   }
 
+  /**
+   * Handle adding a food from search results to the intake and database.
+   * 
+   * @async
+   * @function
+   * @param {Object} food - The food item to add.
+   */
   async function handleAdd(food) {
     if (!user) return;
     const id = await addMacros(food);
@@ -64,10 +98,23 @@ function DailyIntake() {
     handleList();
   }
 
+  /**
+   * Remove the current search results from the UI.
+   * 
+   * @function
+   */
   function handleRemoveSearch() {
     setResult(null);
   }
 
+  /**
+   * Remove a food item from Firebase and update intake and local state.
+   * 
+   * @async
+   * @function
+   * @param {Object} foodToRemove - The food item to remove.
+   * @param {string} foodToRemove.id - The ID of the food item in Firebase.
+   */
   async function handleRemoveList(foodToRemove) {
     if (!user) return;
 

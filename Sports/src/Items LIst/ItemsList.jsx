@@ -1,6 +1,18 @@
 import { Box, VStack, Button, Text } from "@chakra-ui/react";
 import { useEffect } from "react";
 
+/**
+ * Component to display the list of added food items with their macros.
+ * Allows removal of individual items from the list.
+ * 
+ * @param {Object} props - Component props.
+ * @param {function} props.handleRemoveList - Callback to remove a food item.
+ * @param {Object} props.allFood - Object containing all food items, keyed by ID.
+ * @param {function} props.handleList - Callback to fetch the list of foods.
+ * 
+ * @component
+ * @returns {JSX.Element} The ItemsList component.
+ */
 function ItemsList({ handleRemoveList, allFood, handleList }) {
   useEffect(() => {
     handleList();
@@ -10,7 +22,7 @@ function ItemsList({ handleRemoveList, allFood, handleList }) {
     <>
       <Box mt={6}>
         <Text fontSize="md" fontWeight="bold">
-          All Foods (from DB):
+          Added Foods:
         </Text>
         <VStack spacing={2} align="start">
           {allFood &&

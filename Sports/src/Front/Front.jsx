@@ -4,10 +4,27 @@ import { useEffect, useState } from "react";
 import Slideshow from "./SlideShow";
 import { Box } from "@chakra-ui/react";
 
-
+/**
+ * Front component that displays a navigation bar, a wallpaper slideshow,
+ * and a motivational Bible verse section.
+ * 
+ * Fetches wallpaper images asynchronously on mount using `getWallpaper` service,
+ * then passes the images to the `Slideshow` component for display.
+ * 
+ * @component
+ * @returns {JSX.Element} The Front page UI
+ */
 function Front() {
+  /** 
+   * State for storing wallpaper images
+   * @type {Array<Object>}
+   */
   const [images, setImages] = useState([]);
 
+  /**
+   * Effect hook to fetch wallpaper images on component mount.
+   * Loads images asynchronously and sets them in state.
+   */
   useEffect(() => {
     const loadData = async () => {
       const data = await getWallpaper();

@@ -5,12 +5,36 @@ import { AppContext } from "../state/app.context";
 import { get, set, ref } from "firebase/database";
 import { db } from "../config/firebase-config";
 
-function Target({ result, setResult, remaining, food 
-}) {
+/**
+ * Target component lets the user set and view their calorie target,
+ * and shows current food intake and remaining calories.
+ *
+ * It interacts with Firebase to fetch and save the base calorie goal for the user.
+ *
+ * @param {Object} props
+ * @param {string | number} props.result - Current calorie target value from parent
+ * @param {function(string | number): void} props.setResult - Setter to update calorie target in parent
+ * @param {string | number} props.remaining - Remaining calories after intake
+ * @param {number} props.food - Total calories consumed from food intake
+ *
+ * @component
+ * @returns {JSX.Element}
+ */
+function Target({ result, setResult, remaining, food }) {
+  /**
+   * Local state to hold user input for target calories before submitting.
+   * @type {string}
+   */
   const [target, setTarget] = useState("");
 
   const { user } = useContext(AppContext);
 
+  /**
+   * Saves the base calorie goal and resets related fields in Firebase for the current user.
+   *
+   * @param {string | number} goal - The calorie goal to save
+   * @param {string | number} remaining - Remaining calories to save initially (often equal to goal)
+   */
   async function addBaseGoal(goal, remaining) {
     if (!user) return;
 
@@ -22,7 +46,7 @@ function Target({ result, setResult, remaining, food
       baseGoal: goal || "",
       food: "",
       exercise: "",
-      remaining: remaining ||  "",
+      remaining: remaining || "",
     };
 
     try {
@@ -32,6 +56,10 @@ function Target({ result, setResult, remaining, food
     }
   }
 
+  /**
+   * Fetches the saved calorie goal for the current user from Firebase
+   * and updates the `result` state in parent.
+   */
   async function fetchGoal() {
     if (!user) return;
 
@@ -47,53 +75,45 @@ function Target({ result, setResult, remaining, food
     }
   }
 
-  //   async function setRemainingDB() {
-  //   if (!user) return;
-  //   const uniqueUser = await getUserPathByUid(user.uid);
-  //   if (!uniqueUser) return;
-
-  //   const path = ref(db, `${uniqueUser}/goal`);
-
-  //  try {
-  //   await update(path , {remaining})
-  //  } catch (error) {
-  //     console.error("Error updating remainin goal:", error);
-  //   }
-  // }
-
-  
-
   useEffect(() => {
     fetchGoal();
   }, [user]);
 
+  /**
+   * Handles adding/updating the base calorie goal.
+   * Saves to Firebase and updates parent state.
+   */
   async function handleAdd() {
     if (!user) return;
     setResult(target);
-    // setRemaining(target)
     await addBaseGoal(target, target);
     setTarget("");
   }
 
   return (
     <Box
-      maxW="700px" 
+      maxW="700px"
       w="90vw"
-      mx="auto" 
+      mx="auto"
       mt="calc(100px + 20px)"
       p={8}
       bg="gray.800"
       borderRadius="2xl"
       boxShadow="lg"
       color="white"
-      minH="600px" // bigger height
+      minH="600px"
       display="flex"
       flexDirection="column"
       justifyContent="center"
-       fontFamily="'Ancizar Serif', serif"
+      fontFamily="'Ancizar Serif', serif"
     >
       <VStack spacing={6} align="stretch">
-        <Heading size="5xl" textAlign="center" mb="50px"  fontFamily="'Ancizar Serif', serif">
+        <Heading
+          size="5xl"
+          textAlign="center"
+          mb="50px"
+          fontFamily="'Ancizar Serif', serif"
+        >
           Calorie Target
         </Heading>
 
@@ -102,17 +122,18 @@ function Target({ result, setResult, remaining, food
           value={target}
           onChange={(e) => setTarget(e.target.value)}
           bg="gray.700"
-          _placeholder={{ color: "gray.400" }}
+          _placeholder={{ color: "gray.400", fontSize: "32px" }}
           mb="20px"
           height="70px"
           fontSize="32px"
-          _placeholder={{
-            color: "gray.400",
-            fontSize: "32px",
-          }}
         />
 
-        <Button colorScheme="teal" onClick={handleAdd} fontSize="20px" fontWeight="700">
+        <Button
+          colorScheme="teal"
+          onClick={handleAdd}
+          fontSize="20px"
+          fontWeight="700"
+        >
           Add
         </Button>
 
@@ -127,14 +148,9 @@ function Target({ result, setResult, remaining, food
           <Text>
             <strong>Food:</strong> {Number(food).toFixed() || "-"}
           </Text>
-          {/* {!result ? null : (
-            <Text>
-              <strong>Remaining:</strong> {remaining || "-"}
-            </Text>
-          )} */}
           <Text>
-              <strong>Remaining:</strong> {Number(remaining).toFixed() || "-"}
-            </Text>
+            <strong>Remaining:</strong> {Number(remaining).toFixed() || "-"}
+          </Text>
         </Box>
       </VStack>
     </Box>

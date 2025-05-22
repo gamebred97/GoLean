@@ -7,6 +7,38 @@ import { createUserHandle } from "../../services/users.service";
 import { useNavigate } from "react-router-dom";
 import Navigation from '../../Nav/Navigation';
 
+/**
+ * Register component allows new users to create an account with:
+ * - Username (handle)
+ * - Email
+ * - Password
+ * - First name
+ * - Last name
+ *
+ * Workflow:
+ * 1. User fills all input fields.
+ * 2. On submit, it checks if all fields are filled.
+ * 3. Calls `getUserByHandle` to verify if the username is already taken.
+ * 4. If username is free, calls `registerUser` to create a new Firebase auth user with email and password.
+ * 5. After successful registration, calls `createUserHandle` to save the user handle and profile data in the database.
+ * 6. Updates global app context with the new user info.
+ * 7. Navigates user to the "/home" route.
+ *
+ * Uses Chakra UI components for styling.
+ *
+ * Key state and variables:
+ * - `user`: holds form input values for username, email, password, firstName, lastName.
+ * - `setUser`: updates `user` state when inputs change.
+ * - `setContext`: function from AppContext to update global user data after registration.
+ * - `navigate`: react-router function to programmatically change routes.
+ *
+ * Functions:
+ * - `onRegister`: main handler for registration logic and API calls.
+ * - `handleChange`: updates form input state on each keystroke.
+ *
+ * @returns JSX for rendering the registration form and handling user input/submit.
+ */
+
 function Register() {
   const { setContext } = useContext(AppContext);
   const [user, setUser] = useState({

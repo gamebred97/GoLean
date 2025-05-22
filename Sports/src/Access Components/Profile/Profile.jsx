@@ -12,9 +12,25 @@ import { AppContext } from "../../state/app.context";
 import { updateUserProfile, getUserData } from "../../services/users.service";
 import Navigation from "../../Nav/Navigation";
 
+/**
+ * Profile component that displays and allows editing of user profile information.
+ * 
+ * Displays first name, last name, and email of the current user.
+ * Supports toggling between view and edit mode, allowing updates to first and last names.
+ * Updates are saved to the backend and reflected in global app context.
+ * If user is not logged in, prompts to log in.
+ * 
+ * @component
+ * @returns {JSX.Element} Profile UI
+ */
 export default function Profile() {
   const { user, userData, setContext } = useContext(AppContext);
   const [editMode, setEditMode] = useState(false);
+
+  /** 
+   * Local form state for profile inputs
+   * @type {{ firstName: string, lastName: string, email: string }}
+   */
   const [form, setForm] = useState({
     firstName: userData?.firstName || "",
     lastName: userData?.lastName || "",
@@ -23,20 +39,42 @@ export default function Profile() {
 
   if (!user) return <Box p={8}>Please log in to view your profile.</Box>;
 
+  /**
+   * Updates form state on input change
+   * 
+   * @param {React.ChangeEvent<HTMLInputElement>} e - Input change event
+   */
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  /**
+   * Saves updated user profile to backend,
+   * fetches latest user data,
+   * updates global app context with new data,
+   * and exits edit mode.
+   * 
+   * @async
+   * @returns {Promise<void>}
+   */
   const handleSave = async () => {
     await updateUserProfile(user.uid, form.firstName, form.lastName);
+
     const updatedData = await getUserData(user.uid);
+
+    /** 
+     * Extract user data from response or fallback to null 
+     * @type {Object|null} 
+     */
     const userData = updatedData
       ? updatedData[Object.keys(updatedData)[0]]
       : null;
+
     setContext((prev) => ({
       ...prev,
       userData: userData,
     }));
+
     setEditMode(false);
   };
 
@@ -46,7 +84,6 @@ export default function Profile() {
       <Box
         maxW="400px"
         mx="auto"
-      
         p={6}
         borderRadius="md"
         boxShadow="md"
