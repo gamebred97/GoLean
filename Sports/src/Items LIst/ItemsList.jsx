@@ -18,32 +18,29 @@ function ItemsList({ handleRemoveList, allFood, handleList }) {
     handleList();
   }, [handleList]);
 
+
   return (
     <>
-      <Box mt={6}>
-        <Text fontSize="md" fontWeight="bold">
-          Added Foods:
-        </Text>
-        <VStack spacing={2} align="start">
-          {allFood &&
-            typeof allFood === "object" &&
-            Object.entries(allFood).map(([id, item]) => (
-              <Box key={id} p={2} bg="gray.800" borderRadius="md" w="100%">
-                <Text>{item.name}</Text>
-                <Text fontSize="sm">Calories: {item.calories}</Text>
-                <Text fontSize="sm">Protein: {item.protein}g</Text>
-                <Text fontSize="sm">Carbs: {item.carbs}g</Text>
-                <Text fontSize="sm">Fat: {item.fat}g</Text>
-                <Text fontSize="xs" color="gray.400">
-                  Date: {item.date}
-                </Text>
-                <Button onClick={() => handleRemoveList({ ...item, id })}>
-                  Remove
-                </Button>
-              </Box>
-            ))}
-        </VStack>
-      </Box>
+{Object.keys(allFood).length > 0 && (
+  <Box mt={6}>
+    <Text fontSize="md" fontWeight="bold">Added Foods:</Text>
+    <VStack spacing={2} align="start">
+      {Object.entries(allFood).map(([id, item]) => (
+        <Box key={id} p={2} bg="gray.800" borderRadius="md" w="100%">
+          <Text>{item.name}</Text>
+          <Text fontSize="sm">Calories: {item.calories}</Text>
+          <Text fontSize="sm">Protein: {item.protein}g</Text>
+          <Text fontSize="sm">Carbs: {item.carbs}g</Text>
+          <Text fontSize="sm">Fat: {item.fat}g</Text>
+          <Text fontSize="xs" color="gray.400">Date: {item.date}</Text>
+          <Button onClick={() => handleRemoveList({ ...item, id })}>
+            Remove
+          </Button>
+        </Box>
+      ))}
+    </VStack>
+  </Box>
+)}
     </>
   );
 }

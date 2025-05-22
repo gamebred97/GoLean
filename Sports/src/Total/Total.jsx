@@ -1,9 +1,9 @@
-import { Box, Button, Text, useSegmentGroup } from "@chakra-ui/react";
+import { Box, Button, Text } from "@chakra-ui/react";
 import { getUserPathByUid } from "../services/users.service";
 import { AppContext } from "../state/app.context";
 import { useContext } from "react";
 import { db } from "../config/firebase-config";
-import { set, update, ref, get, push, remove } from "firebase/database";
+import { set, ref, get } from "firebase/database";
 import { useEffect, useState } from "react";
 
 function Total({ intake }) {
@@ -56,7 +56,7 @@ function Total({ intake }) {
 
     try {
       const newRef = await set(path, newTotal);
-      return newRef.key;
+      return newRef;
     } catch (error) {
       console.error("Error while creating total", error);
     }
