@@ -41,7 +41,10 @@ function Home() {
   const [remaining, setRemaining] = useState("");
 
   // Calculate total calories from intake array.
-  const totalCalories = intake.reduce((sum, item) => sum + item.nf_calories, 0);
+  const totalCalories = intake.reduce((sum, item) => {
+    const calories = item.calories || item.nf_calories
+    return sum + calories
+  }, 0);
 
   useEffect(() => {
     const resultAfter = Number(result) - totalCalories;
