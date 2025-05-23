@@ -28,7 +28,6 @@ export function FoodProvider({ children }) {
             ...item,
             id,
           }));
-          console.log('intakeList', intakeList);
           setIntake(intakeList);
         }
       } catch (error) {

@@ -5,20 +5,37 @@ import { useContext } from "react";
 import { db } from "../config/firebase-config";
 import { set, ref, get } from "firebase/database";
 import { useEffect, useState } from "react";
+import { FoodContext } from "../state/food.context";
 
-function Total({ intake }) {
+function Total() {
   const { user } = useContext(AppContext);
+  const {intake} = useContext(FoodContext)
 
   const [total, setTotal] = useState(null);
 
-  const totalCalories = intake.reduce((sum, item) => sum + item.nf_calories, 0);
-  const totalProtein = intake.reduce((sum, item) => sum + item.nf_protein, 0);
-  const totalCarbs = intake.reduce(
-    (sum, item) => sum + item.nf_total_carbohydrate,
-    0
-  );
-  const totalFat = intake.reduce((sum, item) => sum + item.nf_total_fat, 0);
+ const totalCalories = intake.reduce((sum, item) => {
+    const calories = item.calories || item.nf_calories
+    return sum + calories
+  }, 0);
 
+
+ const totalProtein = intake.reduce((sum, item) => {
+    const protein = item.protein || item.nf_protein
+    return sum + protein
+  }, 0);
+
+  const totalCarbs = intake.reduce((sum, item) => {
+    const carbs = item.carbs || item.nf_total_carbohydrate
+    return sum + carbs
+  }, 0);
+
+  const totalFat = intake.reduce((sum, item) => {
+    const fat = item.fat || item.nf_total_fat
+    return sum + fat
+  }, 0);
+
+  console.log(intake)
+  console.log(totalCalories)
   async function getTotalDB() {
     if (!user) return;
     const uniqueUser = await getUserPathByUid(user.uid);

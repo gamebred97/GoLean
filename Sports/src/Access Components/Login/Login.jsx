@@ -41,7 +41,7 @@ function Login() {
       .then(() => {
         navigate("/home");
       })
-      .catch((e) => console.log(e.message));
+      .catch((e) =>   console.error("Login failed:", e.code, e.message));
   };
 
   const handleGoogleLogin = () => {

@@ -76,7 +76,7 @@ function Target({ result, setResult, remaining, food }) {
   }
 
   useEffect(() => {
-    fetchGoal();
+    fetchGoal()
   }, [user]);
 
   /**

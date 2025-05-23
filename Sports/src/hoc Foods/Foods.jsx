@@ -22,7 +22,7 @@ function Foods() {
       <Navigation />
       <Search />
       <DailyIntake intake={intake} setIntake={setIntake} />
-      <Total intake={intake} />
+      <Total/>
     </>
   );
 }
