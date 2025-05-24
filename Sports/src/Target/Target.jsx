@@ -101,7 +101,7 @@ function Target({ result, setResult, remaining, food }) {
       borderRadius="2xl"
       boxShadow="lg"
       color="white"
-      minH="600px"
+      minH={{ base: "55vh", md: "69vh" }}
       display="flex"
       flexDirection="column"
       justifyContent="center"
