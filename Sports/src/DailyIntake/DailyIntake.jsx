@@ -1,5 +1,5 @@
 import { useContext, useState, useCallback } from "react";
-import { Box, Text, VStack, Button } from "@chakra-ui/react";
+import { Box, Text, VStack, Button, Image } from "@chakra-ui/react";
 import { FoodContext } from "../state/food.context.jsx";
 import { getUserPathByUid } from "../services/users.service.js";
 import { AppContext } from "../state/app.context.js";
@@ -7,12 +7,13 @@ import { ref, push, remove, get } from "firebase/database";
 import { db } from "../config/firebase-config";
 import moment from "moment";
 import ItemsList from "../Items LIst/ItemsList.jsx";
+import Search from "../Search/Search.jsx";
 
 /**
  * Component for displaying and managing daily food intake.
  * Shows search results, allows adding foods to intake,
  * lists all stored macros, and allows removal.
- * 
+ *
  * @component
  * @returns {JSX.Element} The DailyIntake component.
  */
@@ -24,7 +25,7 @@ function DailyIntake() {
   /**
    * Fetch all macros data from Firebase for the current user
    * and update the allFood state.
-   * 
+   *
    * @async
    * @function
    */
@@ -49,7 +50,7 @@ function DailyIntake() {
 
   /**
    * Add a food macro entry to Firebase for the current user.
-   * 
+   *
    * @async
    * @function
    * @param {Object} food - The food object containing nutrition info.
@@ -68,6 +69,7 @@ function DailyIntake() {
 
     const macroRef = ref(db, `${uniqueUser}/macros`);
     const newData = {
+      photo: food.photo.highres,
       name: food.food_name || "",
       calories: food.nf_calories || "",
       protein: food.nf_protein || "",
@@ -86,7 +88,7 @@ function DailyIntake() {
 
   /**
    * Handle adding a food from search results to the intake and database.
-   * 
+   *
    * @async
    * @function
    * @param {Object} food - The food item to add.
@@ -100,7 +102,7 @@ function DailyIntake() {
 
   /**
    * Remove the current search results from the UI.
-   * 
+   *
    * @function
    */
   function handleRemoveSearch() {
@@ -109,7 +111,7 @@ function DailyIntake() {
 
   /**
    * Remove a food item from Firebase and update intake and local state.
-   * 
+   *
    * @async
    * @function
    * @param {Object} foodToRemove - The food item to remove.
@@ -142,28 +144,73 @@ function DailyIntake() {
 
   return (
     <>
-      {(result || intake.length > 0) && (
-        <Box p={4} borderWidth="1px" borderRadius="md">
-          {result?.foods?.map((food, idx) => (
-            <Box key={idx} mb={3}>
-              <Text fontWeight="bold">{food.food_name}</Text>
-              <Text>Calories: {food.nf_calories.toFixed()}</Text>
-              <Text>Protein: {food.nf_protein}g</Text>
-              <Text>Carbs: {food.nf_total_carbohydrate}g</Text>
-              <Text>Fat: {food.nf_total_fat}g</Text>
-              <Button onClick={() => handleAdd(food)}>Add</Button>
-              <Button onClick={handleRemoveSearch}>Remove</Button>
-            </Box>
-          ))}
-        </Box>
-      )}
-      <ItemsList
-        allFood={allFood}
-        setAllFood={setAllFood}
-        intake={intake}
-        handleRemoveList={handleRemoveList}
-        handleList={handleList}
-      />
+      <Box
+        p={4}
+        borderWidth="1px"
+        borderRadius="md"
+        minHeight="200px"
+        display="flex"
+        flexDirection="column"
+        height="80vh"
+        overflowY="auto"
+      >
+        <Search />
+        {result?.foods?.map((food, idx) => (
+          <Box
+            key={idx}
+            mb={3}
+            mt={4}
+            alignItems="center"
+            display="flex"
+            gap={6}
+            fontSize="20px"
+          >
+            <Image
+              src={food.photo?.highres}
+              alt={food.photo?.highres || "Food Image"}
+              boxSize="50px"
+              objectFit="cover"
+              borderRadius="md"
+              backgroundColor="transparent"
+            />
+            <Text fontWeight="bold">{`${food.food_name.toUpperCase()}`}</Text>
+            <Text>Calories: {food.nf_calories.toFixed()}</Text>
+            <Text>Protein: {food.nf_protein}g</Text>
+            <Text>Carbs: {food.nf_total_carbohydrate}g</Text>
+            <Text>Fat: {food.nf_total_fat}g</Text>
+            <Button
+              onClick={() => handleAdd(food)}
+              variant="ghost"
+              size="lg"
+              fontSize="2xl"
+              p={4}
+              minW="50px"
+              minH="50px"
+            >
+              ✅
+            </Button>
+            <Button
+              onClick={() => handleRemoveSearch(food)}
+              variant="ghost"
+              size="lg"
+              fontSize="2xl"
+              p={4}
+              minW="50px"
+              minH="50px"
+            >
+              ❌
+            </Button>
+          </Box>
+        ))}
+
+        <ItemsList
+          allFood={allFood}
+          setAllFood={setAllFood}
+          intake={intake}
+          handleRemoveList={handleRemoveList}
+          handleList={handleList}
+        />
+      </Box>
     </>
   );
 }

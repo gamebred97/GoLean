@@ -3,7 +3,7 @@ import { getUserPathByUid } from "../services/users.service";
 import { AppContext } from "../state/app.context";
 import { useContext } from "react";
 import { db } from "../config/firebase-config";
-import { set, ref, get } from "firebase/database";
+import { set, ref, get ,update} from "firebase/database";
 import { useEffect, useState } from "react";
 import { FoodContext } from "../state/food.context";
 
@@ -95,7 +95,7 @@ function Total() {
   };
 
     try {
-      await set(path, zeroTotal)
+      await update(path, zeroTotal)
       setTotal(null)
       
     } catch (error) {
@@ -114,30 +114,55 @@ function Total() {
   }, [user]);
 
   return (
-    <>
-      {(intake.length > 0 || total) && (
-        <Box mt={4} p={4} bg="gray.900" borderRadius="md">
-          <Text fontWeight="bold">Macros:</Text>
-          <Text>
-            Calories:{" "}
-            {(intake.length > 0 ? totalCalories : total?.calories)?.toFixed(1)}
-          </Text>
-          <Text>
-            Protein:{" "}
-            {(intake.length > 0 ? totalProtein : total?.protein)?.toFixed(1)}g
-          </Text>
-          <Text>
-            Carbs: {(intake.length > 0 ? totalCarbs : total?.carbs)?.toFixed(1)}
-            g
-          </Text>
-          <Text>
-            Fat: {(intake.length > 0 ? totalFat : total?.fat)?.toFixed(1)}g
-          </Text>
-          <Button onClick={resetTotal}>Clear</Button>
-        </Box>
-      )}
-    </>
-  );
+  <>
+
+      <Box
+        maxW="700px"
+        w="90vw"
+        mx="auto"
+        mt="calc(100px + 20px)"
+        p={8}
+        bg="gray.800"
+        borderRadius="2xl"
+        boxShadow="lg"
+        color="white"
+        minH="600px"
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        fontFamily="'Ancizar Serif', serif"
+      >
+        <Text fontSize="8xl" fontWeight="bold" textAlign="center" mb={6}>
+          Macros
+        </Text>
+        <Text fontSize="4xl" mb={2} textAlign="center">
+          Calories:{" "}
+          {((intake.length > 0 || total) ? totalCalories : total?.calories)?.toFixed(1)}
+        </Text>
+        <Text fontSize="4xl" mb={2} textAlign="center">
+          Protein:{" "}
+          {((intake.length > 0 || total) ? totalProtein : total?.protein)?.toFixed(1)}g
+        </Text>
+        <Text fontSize="4xl" mb={2} textAlign="center">
+          Carbs:{" "}
+          {((intake.length > 0 || total) ? totalCarbs : total?.carbs)?.toFixed(1)}g
+        </Text>
+        <Text fontSize="4xl" mb={6} textAlign="center">
+          Fat: {((intake.length > 0 || total) ? totalFat : total?.fat)?.toFixed(1)}g
+        </Text>
+        {/* <Button
+          onClick={resetTotal}
+          colorScheme="red"
+          fontSize="lg"
+          fontWeight="bold"
+          alignSelf="center"
+        >
+          Clear
+        </Button> */}
+      </Box>
+    
+  </>
+);
 }
 
 export default Total;

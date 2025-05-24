@@ -1,9 +1,10 @@
 import DailyIntake from "../DailyIntake/DailyIntake";
-import Search from "../Search/Search";
+
 import Total from "../Total/Total";
 import { FoodContext } from "../state/food.context";
 import { useContext } from "react";
 import Navigation from "../Nav/Navigation";
+import { Grid } from "@chakra-ui/react";
 
 /**
  * Foods component that renders the main food management UI,
@@ -20,9 +21,10 @@ function Foods() {
   return (
     <>
       <Navigation />
-      <Search />
+      <Grid templateColumns="1fr 1fr" gap={4}>
       <DailyIntake intake={intake} setIntake={setIntake} />
       <Total/>
+      </Grid>
     </>
   );
 }
